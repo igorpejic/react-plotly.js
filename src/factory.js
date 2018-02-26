@@ -57,6 +57,7 @@ export default function plotComponentFactory(Plotly) {
       this.fitHandler = null;
       this.resizeHandler = null;
       this.handlers = {};
+      this.datarevision = null;
 
       this.syncWindowResize = this.syncWindowResize.bind(this);
       this.syncEventHandlers = this.syncEventHandlers.bind(this);
@@ -76,6 +77,9 @@ export default function plotComponentFactory(Plotly) {
     componentDidMount() {
       this.p = this.p
         .then(() => {
+          this.datarevision = this.props.layout
+            ? this.props.layout.datarevision
+            : null;
           return Plotly.newPlot(this.el, {
             data: this.props.data,
             layout: this.resizedLayoutIfFit(this.props.layout),
@@ -98,7 +102,10 @@ export default function plotComponentFactory(Plotly) {
     componentWillUpdate(nextProps) {
       this.p = this.p
         .then(() => {
-          if (hasReactAPIMethod) {
+          if (
+            hasReactAPIMethod &&
+            nextProps.layout.datarevision === this.datarevision
+          ) {
             return Plotly.react(this.el, {
               data: nextProps.data,
               layout: this.resizedLayoutIfFit(nextProps.layout),

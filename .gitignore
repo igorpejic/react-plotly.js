@@ -16,7 +16,7 @@ dist
 
 package-lock.json.*
 
-factory.js
-factory.js.map
-react-plotly.js
-react-plotly.js.map
+# factory.js
+# factory.js.map
+# react-plotly.js
+# react-plotly.js.map
